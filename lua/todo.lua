@@ -51,6 +51,12 @@ local function open_floating_file(target_file)
 	local win = vim.api.nvim_open_win(buf, true, win_config())
 	vim.api.nvim_set_option_value("relativenumber", true, { win = win })
 
+	vim.api.nvim_create_autocmd("BufWinLeave", {
+		callback = function()
+			state.todo_win = nil
+		end,
+	})
+
 	vim.api.nvim_buf_set_keymap(buf, "n", "q", "", {
 		noremap = true,
 		silent = true,
@@ -70,7 +76,7 @@ end
 local function setup_user_commands(opts)
 	local target_file = opts.target_file or "todo.md"
 	vim.api.nvim_create_user_command("Td", function()
-		if state.todo_win then
+		if state.todo_win and vim.api.nvim_win_is_valid(state.todo_win) then
 			vim.api.nvim_win_close(state.todo_win, true)
 			state.todo_win = nil
 			return
