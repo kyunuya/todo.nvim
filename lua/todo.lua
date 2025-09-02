@@ -52,6 +52,8 @@ local function open_floating_file(target_file)
 	vim.api.nvim_set_option_value("relativenumber", true, { win = win })
 
 	vim.api.nvim_create_autocmd("BufWinLeave", {
+		buffer = buf,
+		desc = "Reset window state on leave",
 		callback = function()
 			state.todo_win = nil
 		end,
@@ -74,7 +76,7 @@ local function open_floating_file(target_file)
 end
 
 local function setup_user_commands(opts)
-	local target_file = opts.target_file or "todo.md"
+	local target_file = opts.target_file or "~/todo/todo.md"
 	vim.api.nvim_create_user_command("Td", function()
 		if state.todo_win and vim.api.nvim_win_is_valid(state.todo_win) then
 			vim.api.nvim_win_close(state.todo_win, true)
