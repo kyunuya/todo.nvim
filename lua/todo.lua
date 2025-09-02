@@ -25,7 +25,7 @@ local function win_config()
 		height = height,
 		col = outer_col,
 		row = outer_row,
-		title = { " TODO LIST ", "#82aaff" },
+		title = { { " TODO LIST ", "TelescopePromptTitle" } },
 		title_pos = "center",
 		border = "rounded",
 	}
